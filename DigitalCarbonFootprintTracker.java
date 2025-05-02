@@ -5,26 +5,34 @@ import java.io.IOException;
 public class DigitalCarbonFootprintTracker {
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
-		System.out.println("Wlcome to the Digital Carbon Footprint Tracker!");
-		
+		System.out.println("Welcome to the Digital Carbon Footprint Tracker!");
+
 		System.out.print("Enter miles driven today: ");
 		double milesDriven = scanner.nextDouble();
-		
+
 		System.out.print("Enter electricity used (kWh): ");
 		double electricityUsed = scanner.nextDouble();
-		
+
 		System.out.print("Enter diet type (1 = Meat-heavy, 2 = Balanced, 3 = Vegetarian): ");
 		int dietType = scanner.nextInt();
-		
+
+		if (dietType < 1 || dietType > 3) {
+			System.out.println("Invalid diet type entered. Please enter 1, 2, or 3.");
+			scanner.close();
+			return;
+		}
+
 		double totalEmissions = CarbonCalculator.calculateTotal(milesDriven, electricityUsed, dietType);
-		
+
 		System.out.println("\nYour estimated daily carbon footprint: " + totalEmissions + " kg CO2");
-		
+
 		System.out.println("Suggestions for reducing your footprint:");
 		Suggestions.getTips(milesDriven, electricityUsed, dietType);
-		
+
+		DataHandler.saveData(totalEmissions);
+
 		scanner.close();
-		}
+	}
 }
 class CarbonCalculator {
 
